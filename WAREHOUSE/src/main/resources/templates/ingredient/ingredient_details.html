@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingredient Details</title>
+    <<th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Ingredient Details</h1>
+
+    <dl>
+        <dt>ID:</dt>
+        <dd th:text="${ingredient.id}"></dd>
+        <dt>Ingredient Number:</dt>
+        <dd th:text="${ingredient.ingredientNumber}"></dd>
+        <dt>Name:</dt>
+        <dd th:text="${ingredient.name}"></dd>
+        <dt>Stock:</dt>
+        <dd th:text="${ingredient.stock}"></dd>
+        <dt>Status:</dt>
+        <dd th:text="${ingredient.status}"></dd>
+        <dt>Supplier ID:</dt>
+        <dd th:text="${ingredient.supplierId}"></dd>
+        <dt>Expiration Date:</dt>
+        <dd th:text="${#temporals.format(ingredient.expirationDate, 'dd-MM-yyyy')}"></dd>
+    </dl>
+
+    <div class="actions">
+        <a th:href="@{/ingredients}">Back to Ingredient List</a>
+    </div>
+</main>
+</body>
+</html>

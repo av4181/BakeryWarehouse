@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Warehouse - Ingredients</title>
+    <<th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+
+</head>
+
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Ingredients</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Supplier</th>
+            <th>Expiration Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ingredientDTO : ${ingredients}" th:id="'ingredient_' + ${ingredientDTO.id}">
+            <td th:text="${ingredientDTO.id}" class="pt-3"></td>
+            <td th:text="${ingredientDTO.ingredientNumber}"></td>
+            <td th:text="${ingredientDTO.name}"></td>
+            <td th:text="${ingredientDTO.stock}"></td>
+            <td th:text="${ingredientDTO.status}"></td>
+            <td th:text="${ingredientDTO.supplierId}"></td>
+            <td th:text="${#temporals.format(ingredientDTO.expirationDate, 'dd-MM-yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+
+</body>
+</html>

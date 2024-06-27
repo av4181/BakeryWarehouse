@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Stock</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Update Stock</h1>
+    <form th:action="@{/stock/update/{ingredientNumber}(ingredientNumber=${ingredient.ingredientNumber})}"
+          th:object="${ingredient}" method="post">
+        <input type="hidden" th:field="*{ingredientNumber}" />
+        <div class="form-group">
+            <label for="ingredientNumber">Ingredient Number:</label>
+            <input type="text" id="ingredientNumber" th:field="*{ingredientNumber}" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label for="newStockCount">New Stock:</label>
+            <input type="number" id="newStockCount" name="newStockCount" class="form-control" th:field="*{stock}" />
+        </div>
+
+        <div th:if="${#fields.hasErrors('stock')}" class="alert alert-danger" role="alert">
+            <p th:each="err : ${#fields.errors('stock')}" th:text="${err}"></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Stock</button>
+    </form>
+
+    <div th:if="${error != null}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+    <div th:if="${message != null}" class="alert alert-success" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+
+    <a th:href="@{/stock}">Back to Stock Overview</a>
+</main>
+</body>
+</html>

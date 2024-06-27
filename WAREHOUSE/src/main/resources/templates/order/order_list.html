@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order List</title>
+    <th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Orders</h1>
+
+    <button type="button" class="btn btn-primary mb-3" onclick="window.location.href = '/order/add';">Add New Order</button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderDTO : ${orders}">
+            <td><input type="text" th:value="${orderDTO.id}" class="form-control" disabled></td>
+            <td><input type="text" th:value="${#temporals.format(orderDTO.orderDate, 'dd-MM-yyyy HH:mm')}" class="form-control" disabled></td>
+            <td><input type="text" th:value="${orderDTO.status}" class="form-control" disabled></td>
+            <td>
+                <a th:href="@{/order/{id}(id=${orderDTO.id})}" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> Details
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>

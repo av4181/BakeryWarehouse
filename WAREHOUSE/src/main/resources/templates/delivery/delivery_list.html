@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delivery List</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <<th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Deliveries</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Delivery ID</th>
+            <th>Order ID</th>
+            <th>Destination</th>
+            <th>Delivery Date</th>
+            <th>Status</th>
+<!--            <th>Actions</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="delivery : ${deliveries}">
+            <td th:text="${delivery.id}"></td>
+            <td th:text="${delivery.orderNumber}"></td>
+            <td th:text="${delivery.destination}"></td>
+            <td th:text="${#temporals.format(delivery.deliveryDate, 'dd-MM-yyyy HH:mm')}"></td>
+            <td th:text="${delivery.status}"></td>
+            <td>
+                <a th:href="@{/deliveries/{id}/confirm(id=${delivery.id})}"
+                   th:if="${delivery.status != T(org.example.warehouse2.model.DeliveryStatus).SUCCESS}">Confirm Delivery</a>
+                <a th:href="@{/deliveries/{id}(id=${delivery.id})}">View Details</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

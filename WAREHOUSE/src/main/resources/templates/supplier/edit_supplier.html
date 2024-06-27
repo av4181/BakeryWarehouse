@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Supplier</title>
+    <<th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Edit Supplier</h1>
+    <form th:action="@{/suppliers/update/{id}(id=${supplierDTO.id})}" method="post" th:object="${supplierDTO}">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" placeholder="Supplier Name">
+            <div class="invalid-feedback" th:errors="*{name}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="contactPerson" class="form-label">Contact Person</label>
+            <input type="text" class="form-control" id="contactPerson" th:field="*{contactPerson}" placeholder="Contact Person">
+            <div class="invalid-feedback" th:errors="*{contactPerson}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Email">
+            <div class="invalid-feedback" th:errors="*{email}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" placeholder="Phone Number">
+            <div class="invalid-feedback" th:errors="*{phoneNumber}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Supplier</button>
+    </form>
+</main>
+</body>
+</html>

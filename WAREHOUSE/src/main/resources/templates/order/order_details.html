@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Supplier</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+</head>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Details</title>
+    <th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Order Details</h1>
+
+    <p th:text="'Order ID: ' + ${orderDTO.id}"></p>
+    <p th:text="'Order Date: ' + ${#temporals.format(orderDTO.orderDate, 'dd-MM-yyyy HH:mm')}"></p>
+    <p th:text="'Status: ' + ${orderDTO.status}"></p>
+
+    <h2>Order Items</h2>
+    <table class="table" th:if="${not #lists.isEmpty(orderItems)}">
+        <thead>
+        <tr>
+            <th>Ingredient Number</th>
+            <th>Quantity</th>
+            <th>Ingredient Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${orderItems}">
+            <td th:text="${item.ingredientNumber}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td>
+                <span th:text="${item.ingredient != null} ? ${item.ingredient.name} : 'N/A'"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/order_list}">Back to Order List</a>
+</main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Warehouse - Suppliers</title>
+    <<th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Suppliers</h1>
+
+    <button type="button" class="btn btn-primary" onclick="window.location.href = '/suppliers/add';">Add New Supplier</button>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Contact Person</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="supplier : ${suppliers}" th:id="'supplier_' + ${supplier.id}">
+            <td th:text="${supplier.id}" class="pt-3"></td>
+            <td><input type="text" th:value="${supplier.name}" class="form-control" disabled></td>
+            <td><input type="text" th:value="${supplier.contactPerson}" class="form-control" disabled></td>
+            <td><input type="text" th:value="${supplier.email}" class="form-control" disabled></td>
+            <td><input type="text" th:value="${supplier.phoneNumber}" class="form-control" disabled></td>
+            <td>
+                <button type="button" class="btn btn-warning edit-btn" th:data-id="${supplier.id}">Edit</button>
+                <button type="button" class="btn btn-danger delete-btn" th:data-id="${supplier.id}">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

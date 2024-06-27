@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Warehouse Home</title>
+    <th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+    <link rel="stylesheet" th:href="@{/css/style.css}"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Welcome to the Warehouse</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Stock Management</h2>
+            <div class="col-md-6">
+                <h2>Stock Management</h2>
+                <div class="action-buttons">
+                    <a th:href="@{/stock}">
+                        <button>View Stock</button>
+                    </a>
+                    <a th:href="@{/stock/low}">
+                        <button>Low Stock Items</button>
+                    </a>
+                    <a th:href="@{/ingredients/expiring}">
+                        <button>Expiring Soon</button>
+                    </a>
+                </div>
+            <div id="stock-summary">
+                <p>Total Ingredients: <span th:text="${totalIngredients}"></span></p>
+                <p>Low Stock Items: <span th:text="${lowStockCount}"></span></p>
+                <p>Items Expiring Soon: <span th:text="${expiringSoonCount}"></span></p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Order Management</h2>
+            <div class="action-buttons">
+                <a th:href="@{/order}">
+                    <button>View Orders</button>
+                </a>
+                <a th:href="@{/order}"> <button>Details Order</button> </a>
+            </div>
+            <div id="recent-orders">
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+
+<script th:src="@{/js/app.js}" defer></script>
+</body>
+</html>

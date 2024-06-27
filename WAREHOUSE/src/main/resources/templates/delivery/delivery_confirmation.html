@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Delivery</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <<th:block th:replace="~{includes :: meta_script_link}"> </th:block>
+</head>
+<body>
+<header th:replace="includes :: header"></header>
+
+<main class="container">
+    <h1>Confirm Delivery</h1>
+
+    <p th:text="'Delivery ID: ' + ${delivery.id}"></p>
+    <p th:text="'Order ID: ' + ${delivery.orderNumber}"></p>
+
+    <h2>Are you sure you want to confirm this delivery?</h2>
+
+    <form th:action="@{/deliveries/{id}/confirm(id=${delivery.id})}" method="post">
+        <input type="hidden" th:field="${delivery.id}"/>
+        <input type="hidden" th:field="${delivery.status}"/>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+
+    <a th:href="@{/deliveries}">Back to Delivery List</a>
+</main>
+</body>
+</html>
