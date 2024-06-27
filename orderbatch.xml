@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<PurchaseOrder PurchaseOrderNumber="99503" OrderDate="2023-10-20">
+    <Account Type="B2B">1de496e5-4486-4dec-ae2c-f62317f07c0f</Account>
+    <Items>
+        <Item ProductNumber="33ab0ee2-cb15-45cf-b96e-c6a08d267e8d">
+            <ProductName>Chocolade Donut</ProductName>
+            <Quantity>100</Quantity>
+            <SpecialInstruction/>
+        </Item>
+        <Item ProductNumber="90d89fcb-3db4-49ca-bbbb-c3f91377a65d">
+            <ProductName>Chocolade Donut met hagelslag</ProductName>
+            <Quantity>100</Quantity>
+            <SpecialInstruction>Graag extra veel hagelslag</SpecialInstruction>
+        </Item>
+        <Item ProductNumber="21085c11-3c03-4809-8309-3bc780b43d66">
+            <ProductName>Appeltaart</ProductName>
+            <Quantity>120</Quantity>
+            <SpecialInstruction>30 cm taart vorm</SpecialInstruction>
+        </Item>
+        <Item ProductNumber="84d81c4f-cebb-4089-9a4e-3b406c73c052">
+            <ProductName>Kersentaart</ProductName>
+            <Quantity>100</Quantity>
+            <SpecialInstruction/>
+        </Item>
+    </Items>
+</PurchaseOrder>

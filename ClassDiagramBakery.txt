@@ -1,0 +1,67 @@
+classDiagram
+class_def Product <<entity>> {
+  id: String
+  name: String
+  description: String
+  price: Double
+  active: Boolean
+}
+
+class_def Ingredient <<entity>> {
+  id: String
+  name: String
+  unit: String
+}
+
+class_def Recipe <<entity>> {
+  id: String
+  product_id: String
+  active: Boolean
+}
+
+class_def RecipeIngredient <<entity>> {
+  id: String
+  recipe_id: String
+  ingredient_id: String
+  quantity: Integer
+}
+
+class_def Order <<entity>> { (Optional)
+  id: String
+  customer_id: String
+  status: String
+  created_at: Date
+}
+
+class_def OrderItem <<entity>> { (Optional)
+  id: String
+  order_id: String
+  product_id: String
+  quantity: Integer
+}
+
+Product <->* Recipe
+Recipe <->* RecipeIngredient
+RecipeIngredient --> |optional| Ingredient
+Order -->* OrderItem
+OrderItem --> Product
+
+class_def ProductController {
+  + getProducts(): List<Product>
+  + getProduct(id: String): Product
+  + createProduct(product: Product): Product
+  + updateProduct(id: String, product: Product): Product
+  + deleteProduct(id: String): void
+}
+
+class_def RecipeController {
+  + getRecipes(): List<Recipe>
+  + getRecipe(id: String): Recipe
+  + createRecipe(recipe: Recipe): Recipe
+  + updateRecipe(id: String, recipe: Recipe): Recipe
+  + deleteRecipe(id: String): void
+  + addIngredient(recipeId: String, ingredientId: String, quantity: Integer): void
+  + removeIngredient(recipeId: String, ingredientId: String): void
+}
+
+class_def OrderController { (Optional
