@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+<span>recipe/recipeDetail.html</span>
+
+<div>
+    <h1>
+        Recipe:
+        <span id="recipeName" th:text="${recipe.name}"></span>
+        <!-- TODO BUGGED!! PAYLOAD SETS VALUE BUT REQUESTBODY IN CONTROLLER DOES NOT-->
+        <input type="text" id="editRecipeName" class="edit-fields" style="display: none;" th:value="${recipe.name}">
+
+        <button onclick="toggleEditFields(this)">Edit recipe name</button>
+        <button class="edit-fields" style="display: none;" th:onclick="editRecipe([[${product.id}]], [[${recipe.id}]])">Save</button>
+        <button class="edit-fields" style="display: none;" onclick="cancelEdit(this)">Cancel</button>
+    </h1>
+</div>
+
+<div>This is the recipe for the product: <span th:text="${product.name}"></span>
+    <a th:href="@{'/products/' + ${product.id}}">
+        <button>Manage product</button>
+    </a>
+</div>
+
+
+<div>
+    <h2>Ingredients</h2>
+    <div th:if="${!recipeIngredients.isEmpty()}">
+        <table>
+            <tr th:each="recipeIngredient : ${recipeIngredients}">
+                <td th:text="${recipeIngredient.ingredient.name}">Ingredient Name</td>
+                <td th:text="${recipeIngredient.amount}">Ingredient Amount</td>
+                <td th:text="${recipeIngredient.unitOfMeasurement}">Ingredient Unit</td>
+            </tr>
+        </table>
+        <a th:href="@{'/recipes/' + ${product.id} + '/' + ${recipe.id} +'/ingredients'}">
+            <button>Manage ingredients</button>
+        </a>
+        <br>
+    </div>
+    <div th:if="${recipeIngredients.isEmpty()}">
+        <p>No ingredients yet added.</p>
+        <a th:href="@{'/recipes/' + ${product.id} + '/' + ${recipe.id} +'/ingredients'}">
+            <button>Add Ingredients to the recipe!</button>
+        </a>
+    </div>
+</div>
+
+<div>
+    <h2>Instructions</h2>
+    <div th:if="${recipe.instructions != null}">
+        <span th:text="${recipe.instructions}"></span>
+        <br>
+        <a th:href="@{'/recipes/' + ${recipe.id} + '/instructions/edit'}">
+            <button>Manage instructions</button>
+        </a>
+    </div>
+    <div th:if="${recipe.instructions == null}">
+        <p>No instructions yet added.</p>
+        <a th:href="@{'/recipes/' + ${product.id} + '/' + ${recipe.id} + '/instructions'}">
+            <button>Add Instructions to the recipe!</button>
+        </a>
+    </div>
+
+</div>
+
+<br><br>
+
+<div>
+    <h3>
+        This recipe is currently <b><span th:text="${recipe.finalized ? 'finalized' : 'not finalised'}"></span></b>
+    </h3>
+    <button th:id="toggleFinaliseRecipe" type="button" th:onclick="toggleStateRecipe([[${recipe.id}]])"
+            th:text="${recipe.finalized ? 'Definalise' : 'Finalise'}">
+    </button>
+</div>
+
+<br><br>
+
+<a th:href="@{/}">Return to Home</a>
+<br>
+<a th:href="@{'/products/' + ${product.id}}">Return to product</a>
+</body>
+
+<script>
+    function toggleEditFields(button) {
+        var recipeName = document.getElementById('recipeName');
+        var editRecipeName = document.getElementById('editRecipeName');
+        var editButtons = document.querySelectorAll('.edit-fields');
+
+        if (editRecipeName.style.display === 'none') {
+            recipeName.style.display = 'none';
+            editRecipeName.style.display = 'inline';
+            editButtons.forEach(button => button.style.display = 'inline');
+        } else {
+            recipeName.style.display = 'inline';
+            editRecipeName.style.display = 'none';
+            editButtons.forEach(button => button.style.display = 'none');
+        }
+    }
+</script>
+
+<script>
+    function cancelEdit(button) {
+        var recipeName = document.getElementById('recipeName');
+        var editRecipeName = document.getElementById('editRecipeName');
+        var editButtons = document.querySelectorAll('.edit-fields');
+
+        recipeName.style.display = 'inline';
+        editRecipeName.style.display = 'none';
+        editButtons.forEach(button => button.style.display = 'none');
+    }
+</script>
+
+<script>
+    <!-- TODO do we need to pass productId here?? -->
+    function editRecipe(productId, recipeId) {
+        var newName = document.getElementById('editRecipeName').value;
+
+        $.ajax({
+            url: "/recipes/" + productId + "/" + recipeId,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({name: newName}),
+            success: function (response) {
+                alert("Recipe updated successfully!");
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                alert("Error updating recipe");
+            }
+        });
+    }
+</script>
+
+<script>
+    function toggleStateRecipe(recipeId) {
+        if (confirm("Are you sure you want to change the finalize state for this recipe?")) {
+            $.ajax({
+                url: '/recipes/' + recipeId + '/finalize',
+                type: "PATCH",
+                success: function (response) {
+                    // If successful, reload the page or update the UI to remove instructions
+                    alert("Final state successfully changed.");
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                    alert("Error changing state.");
+                }
+            });
+        }
+    }
+</script>
+
+
+</html>

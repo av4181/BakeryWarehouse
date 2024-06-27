@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Low stock ingredients</title>
+</head>
+<body>
+<p>ingredient/lowStockIngredients.html</p>
+
+<h1>Current low stock ingredients:</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ingredient : ${lowStockIngredients}">
+        <td th:text="${ingredient.name}">Ingredient Name</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<a th:href="@{/}">Return to home</a>
+
+</body>
+</html>

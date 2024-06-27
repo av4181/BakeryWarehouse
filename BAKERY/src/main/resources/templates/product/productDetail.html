@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<span>product/productDetail.html</span>
+<div>
+    <h1>
+        Product:
+        <span id="productName" th:text="${product.name}"></span>
+        <input type="text" id="editProductName" class="edit-fields" style="display: none;" th:value="${product.name}">
+
+        <button onclick="toggleEditFields(this)">Edit product name</button>
+        <button class="edit-fields" style="display: none;" th:onclick="editProduct([[${product.id}]])">Save</button>
+        <button class="edit-fields" style="display: none;" onclick="cancelEdit(this)">Cancel</button>
+    </h1>
+</div>
+
+<div>
+    This product is currently <b><span th:text="${product.isActive() ? 'active' : 'not active'}"></span></b>
+
+    <button th:if="${product.isActive()}" th:id="toggleActivateProduct" type="button"
+            th:onclick="deactivateProduct([[${product.id}]])"
+    >deactivate
+    </button>
+
+</div>
+<br><br>
+<div th:if="${recipe == null}">
+    <div>No recipe available</div>
+    <br>
+    <a th:href="@{'/recipes/' + ${product.id} + '/create'}">
+        <button>Add recipe to the product!</button>
+    </a>
+</div>
+
+<div th:if="${recipe != null}">
+    <div>Recipe
+        <span th:text="${recipe.name}"></span>
+    </div>
+
+    <br>
+    <a th:href="@{'/recipes/' + ${product.id} + '/' + ${recipe.id}}">
+        <button>Manage recipe</button>
+    </a>
+
+</div>
+<br><br>
+<a th:href="@{/products/list}">Go to products list</a>
+<br>
+<a th:href="@{/}">Return to home</a>
+
+<script>
+    function toggleEditFields(button) {
+        var productName = document.getElementById('productName');
+        var editProductName = document.getElementById('editProductName');
+        var editButtons = document.querySelectorAll('.edit-fields');
+
+        if (editProductName.style.display === 'none') {
+            productName.style.display = 'none';
+            editProductName.style.display = 'inline';
+            editButtons.forEach(button => button.style.display = 'inline');
+        } else {
+            productName.style.display = 'inline';
+            editProductName.style.display = 'none';
+            editButtons.forEach(button => button.style.display = 'none');
+        }
+    }
+</script>
+
+<script>
+    function cancelEdit(button) {
+        var productName = document.getElementById('productName');
+        var editProductName = document.getElementById('editProductName');
+        var editButtons = document.querySelectorAll('.edit-fields');
+
+        productName.style.display = 'inline';
+        editProductName.style.display = 'none';
+        editButtons.forEach(button => button.style.display = 'none');
+    }
+</script>
+
+<script>
+    function editProduct(productId) {
+        var newName = document.getElementById('editProductName').value;
+
+        $.ajax({
+            url: "/products/" + productId,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify({name: newName}),
+            success: function (response) {
+                alert("Product updated successfully!");
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                alert("Error updating product");
+            }
+        });
+    }
+</script>
+
+<script>
+    function deactivateProduct(productId) {
+        if (confirm("Are you sure you want to deactivate this product?")) {
+            $.ajax({
+                url: '/products/' + productId + '/deactivate',
+                type: "PATCH",
+                success: function (response) {
+                    // If successful, reload the page or update the UI to remove instructions
+                    alert("State successfully changed.");
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                    alert("Error changing state.");
+                }
+            });
+        }
+    }
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add instructions to recipe</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<p>recipe/addInstructionsToRecipe.html</p>
+<h1>Add instructions to the recipe: <span th:text="${recipe.name}"></span></h1>
+<i>
+    This recipe is currently <b><span th:text="${recipe.finalized ? 'finalized' : 'not finalised'}"></span></b>
+</i><br><br>
+
+<label> Current instructions in recipe:</label><br>
+<div th:if="${recipe.instructions == null}">
+    <p>No instructions available for this recipe. Go add some!</p>
+
+    <form th:action="'/recipes/'+ ${recipe.id} + '/instructions/'" th:object="${addInstructionsToRecipeCommand}"
+          method="post" id="instructionForm">
+        <label>Instructions:</label><br>
+
+        <textarea type="text" th:field="*{instructions}"></textarea>
+        <br>
+        <br>
+        <button type="submit">Add instructions</button>
+    </form>
+</div>
+
+<div th:if="${recipe.instructions != null}">
+    <table>
+        <tr>
+            <th>Instructions</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td><p th:text="${recipe.instructions}"></p></td>
+            <td>
+                <button onclick="toggleEditFields(this)">Edit</button>
+                <div class="edit-fields" style="display: none;">
+                    <textarea type="text" class="edit-instructions" th:text="${recipe.instructions}"></textarea>
+                    <button class="save-edit" onclick="updateRecipeInstructions(this)">Save</button>
+                    <button class="cancel-edit" onclick="cancelEdit(this)">Cancel</button>
+                </div>
+            </td>
+            <td>
+                <button th:id="deleteRecipeInstructions" type="button" th:onclick="deleteRecipeInstructions([[${recipe.id}]])">Delete instructions</button>
+            </td>
+        </tr>
+    </table>
+    <br>
+</div>
+
+<br>
+<br>
+<br>
+
+<a th:href="@{'/recipes/' + ${productId} + '/' + ${recipeId}}">
+    <button>Return to recipe</button>
+</a>
+
+<br>
+<br>
+<br>
+
+
+<!-- TODO FIX HREFS-->
+<a th:href="@{/products/list}">Show all products</a><br>
+<br>
+<a th:href="@{/}">Return to home</a>
+
+
+
+<script>
+    function toggleEditFields(button) {
+        var editFields = $(button).siblings('.edit-fields');
+        editFields.toggle();
+    }
+</script>
+
+<script>
+    function cancelEdit(button) {
+    var editFields = $(button).closest('.edit-fields');
+    editFields.hide();
+    }
+</script>
+
+<script>
+    function updateRecipeInstructions(button) {
+        var row = $(button).closest('tr');
+        var recipeId = [[${recipe.id}]];
+        var instructions = row.find('.edit-instructions').val();
+
+        // Prepare the data object to send in the PUT request
+        var updatedData = {
+            instructions: instructions
+        };
+
+        $.ajax({
+            url: "/recipeInstructions/" + recipeId,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(updatedData),
+            success: function(response) {
+                // Handle success
+                alert("Recipe instructions updated successfully!");
+                // Update the UI to reflect changes
+                row.find('p').text(instructions);
+                // Hide the edit fields after saving
+                row.find('.edit-fields').hide();
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText);
+                alert("Error updating recipe instructions.");
+            }
+        });
+    }
+</script>
+
+<script>
+    function deleteRecipeInstructions(recipeId) {
+        if (confirm("Are you sure you want to delete the instructions for this recipe?")) {
+            $.ajax({
+                url: "/recipeInstructions/" + recipeId,
+                type: "DELETE",
+                success: function(response) {
+                    // If successful, reload the page or update the UI to remove instructions
+                    alert("Recipe instructions deleted successfully.");
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                    alert("Error deleting recipe instructions.");
+                }
+            });
+        }
+    }
+</script>
+
+
+</body>
+</html>

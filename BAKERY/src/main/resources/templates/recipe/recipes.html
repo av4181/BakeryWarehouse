@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recipes</title>
+</head>
+<body>
+<h1>Recipes</h1>
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>Name</th>
+        <th>status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="recipe : ${recipes}">
+        <td th:text="${recipe.id}">Recipe id</td>
+        <td> <a th:href="${recipe.id}"><span th:text="${recipe.name}"></span></a></td>
+        <td th:text="${recipe.finalized ? 'Finalized' : 'Not finalized'}">
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<button><a th:href="@{/recipes/create}">Create New Recipe</a></button><br>
+<br>
+<a th:href="@{/products/list}">Go to products list</a>
+<br>
+<a th:href="@{/}">Return to home</a>
+
+</body>
+</html>

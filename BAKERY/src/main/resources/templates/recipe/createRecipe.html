@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Recipe</title>
+</head>
+<body>
+<span>recipe/createRecipe.html</span>
+<h1>Create Recipe for product: <span th:text="${product.name}"></span></h1>
+
+<div th:if="${recipe == null}">
+
+    <form th:action="@{'/recipes/' + ${product.id} + '/create'}" th:object="${createRecipeCommand}" method="post">
+        <input type="hidden" th:field="*{product}" th:value="${product}">
+        <label>Name:</label><br>
+        <input type="text" th:field="*{name}"><br><br>
+        <button type="submit">save</button>
+    </form>
+    <br>
+</div>
+
+<div th:if="${recipe != null}">
+    <br>
+    <span th:text="${recipe.name}"></span>
+    <br><br>
+    <a th:href="@{'/recipes/' + ${product.id} + '/' + ${recipe.id} +'/ingredients'}">
+        <button>Add Ingredients to the recipe!</button>
+    </a>
+
+    <a th:href="@{'/recipes/' + ${product.id} + '/' + ${recipe.id} + '/instructions'}">
+        <button>Add Instructions to the recipe!</button>
+    </a>
+</div>
+
+<!-- TODO FIX HREFS-->
+<!--<br>-->
+<div>
+    <a th:href="@{/products/list}">Show products list</a>
+    <br>
+
+    <div th:if="${recipe != null}">
+        <a th:href="@{'/recipes/' + ${product.id} + '/' + ${recipe.id}}">Show recipe</a>
+    </div>
+
+    <br>
+    <!--<br>-->
+    <a th:href="@{/}">Return to home</a>
+</div>
+</body>
+</html>

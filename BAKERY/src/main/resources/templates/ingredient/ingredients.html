@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ingredients</title>
+</head>
+<body>
+<h1>Ingredients</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ingredient : ${ingredients}">
+        <td th:text="${ingredient.name}">Ingredient Name</td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:if="${ingredients.isEmpty()}">
+    <p>No ingredients yet added.</p>
+    <button><a th:href="@{/ingredients/create}">Create New Ingredient</a></button>
+</div>
+<div th:if="${not ingredients.isEmpty()}">
+    <br>
+    <button><a th:href="@{/ingredients/create}">Create Another Ingredient</a></button>
+</div>
+
+<br>
+<a th:href="@{/recipes/list}">Go to Recipes</a>
+<br>
+<a th:href="@{/}">Return to Home</a>
+
+</body>
+</html>

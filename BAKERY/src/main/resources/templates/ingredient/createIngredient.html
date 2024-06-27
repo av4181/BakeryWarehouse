@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Ingredient</title>
+</head>
+<body>
+<h1>Create Ingredient</h1>
+<form action="/ingredients/ingredients" th:object="${createIngredientCommand}" method="post">
+    <label>Name:</label><br>
+    <input type="text" th:field="*{name}"><br><br>
+    <button type="submit">Create</button>
+</form>
+<br>
+<a th:href="@{/ingredients/list}">Go to ingredients list</a>
+<br>
+<a th:href="@{/}">Return to Home</a>
+
+
+</body>
+</html>

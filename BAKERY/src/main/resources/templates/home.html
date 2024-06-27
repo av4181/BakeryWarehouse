@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.js"></script>
+</head>
+<body>
+<span>home.html</span>
+<h1>The Bakery</h1>
+
+<br>
+<a th:href="@{/products/create}">
+    <button>Create new product!</button>
+</a>
+<br><br>
+<a th:href="@{/products/list}">
+    <button>Show me all products!</button>
+</a>
+
+<br><br>
+<div style="zoom: 0.5">
+    <div id="clock" style="margin-bottom:20px; font-size: 10px;">
+    </div>
+</div>
+<div id="countdown"></div>
+<br>
+
+<div th:if="${productsToBeBaked.isEmpty()}">
+    <p>No products ready to be baked!</p>
+</div>
+
+<div th:if="${!productsToBeBaked.isEmpty()}">
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Recipe</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${productsToBeBaked}">
+            <td th:text="${product.key}"></td>
+            <td th:text="${product.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="button" th:id="bakeAllBtn" th:onclick="bakeAllProducts()">Bake 'em all!</button>
+</div>
+
+
+</body>
+<script src="/js/clock.js"></script>
+
+<!-- TODO: refresh page automatically at 22:01? -->
+<script>
+    function bakeAllProducts() {
+        if (confirm("Are you sure you want to bake all the goods?")) {
+            $.ajax({
+                url: "/products/bakeAll",
+                type: "POST",
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                    alert("Error baking all the goods.");
+                    location.reload();
+                }
+            });
+        }
+    }
+</script>
+
+</html>

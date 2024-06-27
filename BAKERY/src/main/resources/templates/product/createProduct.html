@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Product</title>
+</head>
+<body>
+<span>product/createProduct.html</span>
+<h1>Create Product</h1>
+
+<div th:if="${product == null}">
+    <form th:action="@{/products/create}" th:object="${createProductCommand}" method="post">
+        <label>Name:</label><br>
+        <input type="text" th:field="*{name}"><br><br>
+        <button type="submit">save</button>
+    </form>
+</div>
+
+
+<a th:href="@{/products/list}">Go to products list</a>
+<br><br>
+<a th:href="@{/}">Return to home</a>
+
+</body>
+</html>

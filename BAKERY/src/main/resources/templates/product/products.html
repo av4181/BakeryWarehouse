@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Products</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<span>product/products.html</span>
+<h1>Products</h1>
+
+<div th:if="${products.isEmpty()}">
+    <p>No products available. Go add some!</p>
+</div>
+
+<div th:if="${!products.isEmpty()}">
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Recipe</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.name}"></td>
+
+            <td th:if="${productRecipes[product.id] != null}">
+                <span th:text="${productRecipes[product.id].name}"></span>
+            </td>
+            <td th:if="${productRecipes[product.id] == null}">
+                <div>No recipe available</div>
+                <span><a th:href="@{'/recipes/' + ${product.id}+'/create'}"><button>Create recipe for <span
+                        th:text="${product.name}"></span></button></a></span>
+            </td>
+
+            <td th:text="${product.active ? 'Active' : 'Inactive'}">
+            <td>
+                <button th:if="${product.isActive()}" th:id="toggleActivateProduct" type="button"
+                        th:onclick="deactivateProduct([[${product.id}]])"
+                >deactivate
+                </button>
+            </td>
+            <td>
+                <a th:href="@{'/products/' + ${product.id}}">
+                    <button>Manage product</button>
+                </a>
+            </td>
+            <br>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<a th:href="@{/products/create}">
+    <button>Create New Product</button>
+</a>
+<br><br>
+<a th:href="@{/}">Return to home</a>
+
+<!-- TODO set state in alert -->
+<script>
+    function deactivateProduct(productId) {
+        if (confirm("Are you sure you want to deactivate this product?")) {
+            $.ajax({
+                url: '/products/' + productId + '/deactivate',
+                type: "PATCH",
+                success: function (response) {
+                    // If successful, reload the page or update the UI to remove instructions
+                    alert("State successfully changed.");
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                    alert("Error changing state.");
+                }
+            });
+        }
+
+    }
+</script>
+
+</body>
+
+
+</html>
